@@ -41,17 +41,14 @@ const dataFilePath = path.join(__dirname, 'data.json');
 
 // Utility to deep merge objects
 function deepMerge(target, updates) {
-  for (const key in updates) {
-    if (
-      updates[key] instanceof Object &&
-      key in target &&
-      target[key] instanceof Object
-    ) {
+  for (const key in updates) 
+    if ( updates[key] instanceof Object &&
+         key in target &&
+         target[key] instanceof Object ) 
+
       deepMerge(target[key], updates[key]);
-    } else {
+    else 
       target[key] = updates[key];
-    }
-  }
 }
 
 // Process GET for all user
