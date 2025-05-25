@@ -1,7 +1,5 @@
 # List-Manager-Project
 
-To run this project:
-  make sure node.js is installed
-   
-  Then, run the following command in terminal:
-   npm install
+To start up this project
+    Install node.js
+    Execute Terminal Command: npm install
