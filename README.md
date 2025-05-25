@@ -1,7 +1,6 @@
 # List-Manager-Project  
 
-To start up this project  
-<p>
+<p> To start up this project
       Install node.js  
       Run Terminal Command: npm install
 </p>   
