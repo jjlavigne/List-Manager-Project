@@ -44,9 +44,7 @@ const dataFilePath = path.join(__dirname, 'data.json');
 function deepMerge(target, updates) {
   
   for (const key in updates) 
-    
     if ( updates[key] instanceof Object ) 
-
       deepMerge(target[key], updates[key]);
     else 
       target[key] = updates[key];
