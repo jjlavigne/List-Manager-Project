@@ -34,7 +34,8 @@ let newRecord = {              // This object template is used to arrange all fi
 app.use(express.json());
 
 // Middleware to handle Cross-Origin Requests
-app.use(cors());
+// app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Path to the JSON data file
 const dataFilePath = path.join(__dirname, 'data.json');
@@ -49,7 +50,16 @@ function deepMerge(target, updates) {
       deepMerge(target[key], updates[key]);
     else 
       target[key] = updates[key];
-}
+};
+
+// Renumbers all record ids after a deleted record
+function updateRecordIds(users, id) {
+  deletedId = id;
+  userLength = users.length;
+
+  for (let currentId = deletedId; currentId <= userLength; currentId++)
+    users[currentId - 1].id = currentId;
+};
 
 // Process GET for all user
 app.get('/users', async (req, res) => {
@@ -112,7 +122,6 @@ app.put('/users/:id', async (req, res) => {
     if (user) {
       
       deepMerge(user, req.body);                                            // copy all key fields from req.body to existing record with corresponding id
-      users[user.id - 1].id = parseInt(req.params.id);                      // Changes id in updated record from string integer to integer
       await fs.writeFile(dataFilePath, JSON.stringify(users, null, 2));     // Write entire data file back to data.json file
       res.status(200).json(user);                                           // If record exists, send back to client
 
@@ -135,7 +144,6 @@ app.patch('/users/:id', async (req, res) => {
     if (user) {
       
       deepMerge(user, req.body);                                            // copy only key fields that were sent in req.body, leaving existing fields as they are
-      users[user.id - 1].id = parseInt(req.params.id);                      // Changes id in updated record from string integer to integer
       await fs.writeFile(dataFilePath, JSON.stringify(users, null, 2));     // Write entire data file back to data.json file
       res.status(200).json(user);                                           // If record exists, send back to client
 
@@ -159,6 +167,7 @@ app.delete('/users/:id', async (req, res) => {
     if (user) {   // if user record found
 
       users = users.filter(thisUser => thisUser.id !== parseInt(req.params.id));   // filter out record with corresponding id
+      updateRecordIds(users, parseInt(req.params.id));                             // Renumbers all record ids after a deleted record
       await fs.writeFile(dataFilePath, JSON.stringify(users, null, 2));     // Write entire data file back to data.json file
       res.status(200).json(user);                                                 // If record exists, send back to client
 
