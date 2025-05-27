@@ -19,9 +19,9 @@ class ApiClient {
                 if (!response.ok) {                                                                 // HTTP request failed
                     this.queryResults.value = 'HTTP DELETE request error: Status = ' + response.status.toString(); // log failure to Result output                                                  // Check for request error
                     throw new Error('HTTP request failed: Status = ' + response.status.toString()); // Throw error POST,PUT or PATCH request failed
-                }
-                this.queryResults.value = 'Deleted record number ' +  `${id}`;   // Send delete message to text area
-                })
+                }})
+
+            this.queryResults.value = 'Deleted record number ' +  `${id}`;   // Send delete message to text area
 
           // Catch error, send to console, and throw
         } catch (error) {
@@ -81,7 +81,7 @@ class ApiClient {
                             return response;
                             })
                         .then((response) => response.json())    // Format response into json file and return file
-                        .then((json) => this.queryResults.value = JSON.stringify(json, null, 2))    // Stringify json file and return
+                        .then((json) => this.queryResults.value = JSON.stringify(json, null, 2));    // Stringify json file and return
             
             // Catch error, send to console, then throw error
             } catch (error) {
@@ -99,13 +99,13 @@ class ApiClient {
 //-----------------------------------------------------------------------------------
 
 // Event listeners triggered when radio button is selected for a request
-document.getElementById("get").addEventListener("focus", radioGetDelete);
-document.getElementById("post").addEventListener("focus", radioPost);
-document.getElementById("put").addEventListener("focus", radioPutPatch);
-document.getElementById("patch").addEventListener("focus", radioPutPatch);
-document.getElementById("delete").addEventListener("focus", radioGetDelete);
+document.getElementById("get").addEventListener("change", radioGetDelete);
+document.getElementById("post").addEventListener("change", radioPost);
+document.getElementById("put").addEventListener("change", radioPutPatch);
+document.getElementById("patch").addEventListener("change", radioPutPatch);
+document.getElementById("delete").addEventListener("change", radioGetDelete);
 // Event listener triggered when "Send Request" button is clicked
-document.getElementById("myButton").addEventListener("focus", getRequestType);
+document.getElementById("myButton").addEventListener("click", getRequestType);
 
 // Disables input for all input fields except for ID for Get and Delete requests
 function radioGetDelete() {
@@ -238,11 +238,11 @@ function postPutPatchRequest(method) {
 
     inputs.forEach(input => {                              // Check each input field for values
 
-        if (input.value) {                                 // If an input field contains a value, add the value to the jsonFields object
+        if (input.value && input.value != 1) {                                 // If an input field contains a value, add the value to the jsonFields object
 
             const currentID = +input.id;   // Each input id has to begin with a letter.
                                                         // a was added before each id and removed using substring to get the inputs id number
-            if ((currentID >= 1 && currentID <= 4) || (currentID >= 11 && currentID <= 12))
+            if ((currentID > 1 && currentID <= 4) || (currentID >= 11 && currentID <= 12))
                 // currentJsonField is a temporary place holder for the current field
                 currentJsonField = jsonFields;           // If input is within this range, it's on the first level of the jsonFields object
             else
@@ -254,11 +254,11 @@ function postPutPatchRequest(method) {
             else
                 currentJsonField = jsonFields.company;      // otherwise, this is the range of the company fields of the jsonFields object       
 
-                // Get the corresponding label for the input field. The label name is used to add the field name to the jsonField object
-                const currentLabel = document.querySelector(`label[id='${input.id}']`).textContent;
+            // Get the corresponding label for the input field. The label name is used to add the field name to the jsonField object
+            const currentLabel = document.querySelector(`label[id='${input.id}']`).textContent;
 
-                if (input.value)                            // add a field to the jsonFields object if there is date in that field
-                    currentJsonField[currentLabel] = input.value;
+            if (input.value)                            // add a field to the jsonFields object if there is date in that field
+                currentJsonField[currentLabel] = input.value;
 
             }
 
