@@ -248,31 +248,7 @@ body {
     font-weight: bold;
     color: #7200b0;
 }
-/*
-#put {
-    display: none;
-}
 
-#lput {
-    display: none;
-}
-
-#patch {
-    display: none;
-}
-
-#lpatch {
-    display: none;
-}
-
-#delete {
-    display: none;
-}
-
-#ldelete {
-    display: none;
-}
-*/
 .fieldGroup {
     padding: 15px;
     border: 1px solid rgb(3, 11, 237);
