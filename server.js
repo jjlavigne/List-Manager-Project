@@ -98,7 +98,7 @@ app.post('/users', async (req, res) => {
     const users = JSON.parse(data);                                   // convert records to non stringified json, similar to js object
 
     deepMerge(newRecord, req.body);                                   // copy all key fields from req.body to newRecord object template in correct order
-    newRecord.id = users.length > 0 ? Math.max(...users.map(user => user.id)) + 1 : 1;   // Find the ID of the next user and  assign to new record
+    newRecord.id = users.length > 0 ? users.length + 1 : 1;   // Find the ID of the next user and  assign to new record
     // Add new user record to end of json data file
     users.push(newRecord);                                                 // Add new user record contained in newRecord to the end of the records 
     await fs.writeFile(dataFilePath, JSON.stringify(users, null, 2));     // Write entire data file back to data.json file
